@@ -1,6 +1,6 @@
-# TensorFlow Lite Flutter Object Detection
+# TensorFlow Lite Flutter Cataract Detection with Expert System
 
-Object Detection app built using [TFLite Flutter Plugin](https://github.com/am15h/tflite_flutter_plugin)
+Cataract Detection app built using [TFLite Flutter Plugin](https://github.com/am15h/tflite_flutter_plugin)
 and [TFLite Flutter Helper Library](https://github.com/am15h/tflite_flutter_helper)
 
 #### **Important**
