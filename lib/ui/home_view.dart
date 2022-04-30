@@ -136,27 +136,37 @@ class _HomeViewState extends State<HomeView> {
   }
 
   void _captureAndClassify(List<Recognition> results, CameraImage cameraImage) {
+    double left, top, width, height;
+    Size screenSize = MediaQuery.of(context).size;
     results.map((e) {
-      double left, top, width, height;
-      imglib.Image convertedImage = ImageUtils.convertCameraImage(cameraImage);
+
       left = e.renderLocation.left;
       top = e.renderLocation.top;
       width = e.renderLocation.width;
       height = e.renderLocation.height;
+
+      imglib.Image convertedImage = ImageUtils.convertCameraImage(cameraImage);
+      imglib.Image resizedImage = imglib.copyResize(convertedImage,width: (screenSize.width * 0.75).round());
+      imglib.Image rotatedImage = imglib.copyRotate(resizedImage, 90);
       log("$left");
       log("$top");
       log("$width");
       log("$height");
 
-      // ///crop convertedImage
-      // imglib.Image croppedImage = imglib.copyCrop(convertedImage, left.round(),
-      //     top.round(), width.round(), height.round());
+      ///crop convertedImage
+      imglib.Image croppedImage = imglib.copyCrop(rotatedImage, (left/1.75).round(),
+          (top/1.75).round(), (width/1.75).round(), (height/1.75).round());
+
+      log("${left.round()}");
+      log("${top.round()}");
+      log("${width.round()}");
+      log("${height.round()}");
 
       String pathFull = MyApp.imgDir;
       log(pathFull);
       String namafileFull = 'fullCapt.jpg';
       pathFull = pathFull + "/" + namafileFull;
-      var jpgFullFile = imglib.encodeJpg(convertedImage);
+      var jpgFullFile = imglib.encodeJpg(croppedImage);
       new File(pathFull).writeAsBytesSync(jpgFullFile);
       Navigator.pushReplacement(
           context,
@@ -183,7 +193,7 @@ class _HomeViewState extends State<HomeView> {
 
   /// Callback to get inference cameraImage from [CameraView]
   void cameraImageCallback(CameraImage cameraImage) {
-      this.cameraImage = cameraImage;
+    this.cameraImage = cameraImage;
   }
 
   static const BOTTOM_SHEET_RADIUS = Radius.circular(24.0);

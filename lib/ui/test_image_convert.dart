@@ -3,7 +3,10 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:tflite/tflite.dart';
+
+import 'form_identification_view.dart';
 // import 'package:tflite/tflite.dart';
 
 class testImageConvert extends StatefulWidget {
@@ -33,7 +36,6 @@ class _testImageConvertState extends State<testImageConvert> {
         _loading = false;
       });
     });
-
 
     classifyImage(imagePath);
   }
@@ -88,7 +90,23 @@ class _testImageConvertState extends State<testImageConvert> {
                             background: Paint()..color = Colors.white,
                           ),
                         )
-                      : Container()
+                      : Container(),
+                  RaisedButton(
+                    child: Text(
+                      'Lanjut',
+                      style: GoogleFonts.openSans(),
+                    ),
+                    onPressed: (){
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => FormIdentificationView()));
+                    },
+                    color: Colors.lightGreen,
+                    textColor: Colors.white,
+                    padding: EdgeInsets.all(8.0),
+                    splashColor: Colors.grey,
+                  ),
                 ],
               ),
             ),
@@ -126,4 +144,3 @@ class _testImageConvertState extends State<testImageConvert> {
 //     );
 //   }
 // }
-
