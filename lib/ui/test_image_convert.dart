@@ -4,10 +4,10 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:object_detection/ui/question_view.dart';
 import 'package:tflite/tflite.dart';
 
 import 'form_identification_view.dart';
-// import 'package:tflite/tflite.dart';
 
 class testImageConvert extends StatefulWidget {
   final String iris;
@@ -100,7 +100,7 @@ class _testImageConvertState extends State<testImageConvert> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => FormIdentificationView()));
+                              builder: (context) => QuestionView(resultClassification: _outputs[0]["label"],)));
                     },
                     color: Colors.lightGreen,
                     textColor: Colors.white,
