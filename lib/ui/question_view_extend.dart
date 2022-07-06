@@ -223,7 +223,7 @@ class _QuestionViewExtendState extends State<QuestionViewExtend> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: Text(
-                  "Apakah anda Berusia antara satu sampai 10 tahun?",
+                  "Apakah anda mengalami rasa sakit tersebut antara satu sampai 10 tahun?",
                   style: GoogleFonts.openSans(
                     fontStyle: FontStyle.normal,
                     fontWeight: FontWeight.bold,

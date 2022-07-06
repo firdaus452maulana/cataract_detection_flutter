@@ -3,6 +3,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:object_detection/model/cf_pakar.dart';
+import 'package:object_detection/model/daftar_gejala.dart';
 
 class ResultView extends StatefulWidget {
   final List<double> cfUser;
@@ -36,8 +37,10 @@ class _ResultViewState extends State<ResultView> {
     'G019'
   ];
   List<double> cfUser = [];
+  List<String> gejalaUser = [];
   Map<String, double> cfValueUser;
-  List<cfPakar> cfValuePakar;
+  Map<String, num> cfValueResult = Map();
+  List<CfPakar> cfValuePakar;
 
   @override
   void initState() {
@@ -45,12 +48,15 @@ class _ResultViewState extends State<ResultView> {
     super.initState();
     cfUser = widget.cfUser;
     cfValueUser = Map.fromIterables(idGejala, widget.cfUser);
-    cfValuePakar = cfPakar.fetchAll();
-    log(calculateKatarak().toString());
-    log(calculateKatarakTraumatik().toString());
-    log(calculateKatarakSubkapsularisPosterior().toString());
-    log(calculateKatarakSenilis().toString());
-    log(calculateKatarakJuvenile().toString());
+    cfValuePakar = CfPakar.fetchAll();
+    gejalaUser = getGejala();
+    log(gejalaUser.toString());
+    calculateKatarak();
+    calculateKatarakTraumatik();
+    calculateKatarakSubkapsularisPosterior();
+    calculateKatarakSenilis();
+    calculateKatarakJuvenile();
+    log(cfValueResult.toString());
   }
 
   @override
@@ -73,7 +79,22 @@ class _ResultViewState extends State<ResultView> {
     );
   }
 
-  num calculateKatarak() {
+  List<String> getGejala() {
+    List<DaftarGejala> daftarGejala = DaftarGejala.daftarGejala();
+    Map<String, String> daftarGejalaMap = {};
+    daftarGejala.forEach((element) {
+      daftarGejalaMap[element.id] = element.nama;
+    });
+    List<String> result = [];
+    cfValueUser.entries.forEach((entry) {
+      if (entry.value > 0) {
+        result.add(daftarGejalaMap[entry.key]);
+      }
+    });
+    return result;
+  }
+
+  calculateKatarak() {
     List<num> cf = [];
     cf.add(cfValuePakar[0].cf['G001'] * cfValueUser['G001']);
     cf.add(cfValuePakar[0].cf['G002'] * cfValueUser['G002']);
@@ -91,10 +112,10 @@ class _ResultViewState extends State<ResultView> {
         cfGabungan = _hitungCfBeda(cfGabungan, cf[i]);
       }
     }
-    return cfGabungan * 100;
+    cfValueResult[cfValuePakar[0].nama] = cfGabungan * 100;
   }
 
-  num calculateKatarakTraumatik() {
+  calculateKatarakTraumatik() {
     List<num> cf = [];
     cf.add(cfValuePakar[1].cf['G002'] * cfValueUser['G002']);
     cf.add(cfValuePakar[1].cf['G003'] * cfValueUser['G003']);
@@ -112,10 +133,10 @@ class _ResultViewState extends State<ResultView> {
         cfGabungan = _hitungCfBeda(cfGabungan, cf[i]);
       }
     }
-    return cfGabungan * 100;
+    cfValueResult[cfValuePakar[1].nama] = cfGabungan * 100;
   }
 
-  num calculateKatarakSubkapsularisPosterior() {
+  calculateKatarakSubkapsularisPosterior() {
     List<num> cf = [];
     cf.add(cfValuePakar[2].cf['G002'] * cfValueUser['G002']);
     cf.add(cfValuePakar[2].cf['G003'] * cfValueUser['G003']);
@@ -136,10 +157,10 @@ class _ResultViewState extends State<ResultView> {
         cfGabungan = _hitungCfBeda(cfGabungan, cf[i]);
       }
     }
-    return cfGabungan * 100;
+    cfValueResult[cfValuePakar[2].nama] = cfGabungan * 100;
   }
 
-  num calculateKatarakSenilis() {
+  calculateKatarakSenilis() {
     List<num> cf = [];
     cf.add(cfValuePakar[3].cf['G004'] * cfValueUser['G004']);
     cf.add(cfValuePakar[3].cf['G007'] * cfValueUser['G007']);
@@ -156,10 +177,10 @@ class _ResultViewState extends State<ResultView> {
         cfGabungan = _hitungCfBeda(cfGabungan, cf[i]);
       }
     }
-    return cfGabungan * 100;
+    cfValueResult[cfValuePakar[3].nama] = cfGabungan * 100;
   }
 
-  num calculateKatarakJuvenile() {
+  calculateKatarakJuvenile() {
     List<num> cf = [];
     cf.add(cfValuePakar[4].cf['G004'] * cfValueUser['G004']);
     cf.add(cfValuePakar[4].cf['G007'] * cfValueUser['G007']);
@@ -176,7 +197,7 @@ class _ResultViewState extends State<ResultView> {
         cfGabungan = _hitungCfBeda(cfGabungan, cf[i]);
       }
     }
-    return cfGabungan * 100;
+    cfValueResult[cfValuePakar[4].nama] = cfGabungan * 100;
   }
 
   num _hitungCfPositif(num cfLama, num cfBaru) {

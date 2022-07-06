@@ -17,8 +17,8 @@ class Classifier {
   /// Labels file loaded as list
   List<String> _labels;
 
-  static const String MODEL_FILE_NAME = "detect_iv.tflite";
-  static const String LABEL_FILE_NAME = "labels_iv.txt";
+  static const String MODEL_FILE_NAME = "detect_resize_metadata.tflite";
+  static const String LABEL_FILE_NAME = "label_iris.txt";
 
   /// Input size of image (height = width = 300)
   static const int INPUT_SIZE = 300;

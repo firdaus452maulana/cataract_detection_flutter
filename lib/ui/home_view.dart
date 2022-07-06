@@ -47,22 +47,22 @@ class _HomeViewState extends State<HomeView> {
           // Bounding boxes
           boundingBoxes(results),
 
-          // Heading
-          Align(
-            alignment: Alignment.topLeft,
-            child: Container(
-              padding: EdgeInsets.only(top: 20),
-              child: Text(
-                'Object Detection Flutter',
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.deepOrangeAccent.withOpacity(0.6),
-                ),
-              ),
-            ),
-          ),
+          // // Heading
+          // Align(
+          //   alignment: Alignment.topLeft,
+          //   child: Container(
+          //     padding: EdgeInsets.only(top: 20),
+          //     child: Text(
+          //       'Object Detection Flutter',
+          //       textAlign: TextAlign.left,
+          //       style: TextStyle(
+          //         fontSize: 28,
+          //         fontWeight: FontWeight.bold,
+          //         color: Colors.deepOrangeAccent.withOpacity(0.6),
+          //       ),
+          //     ),
+          //   ),
+          // ),
 
           // Bottom Sheet
           Align(
@@ -83,7 +83,7 @@ class _HomeViewState extends State<HomeView> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(Icons.keyboard_arrow_up,
-                            size: 48, color: Colors.orange),
+                            size: 48, color: Color(0xFF00D092)),
                         (stats != null)
                             ? Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -113,7 +113,8 @@ class _HomeViewState extends State<HomeView> {
       floatingActionButton: new Visibility(
           visible: results != null ? true : false,
           child: FloatingActionButton(
-            child: Icon(Icons.add),
+            backgroundColor: Color(0xFF00D092),
+            child: Icon(Icons.add_circle_outline, size: 36,),
             onPressed: () {
               _captureAndClassify(results, cameraImage);
             },

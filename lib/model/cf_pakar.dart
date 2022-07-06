@@ -1,12 +1,12 @@
-class cfPakar {
+class CfPakar {
   final String id, nama;
   final Map<String, num> cf;
 
-  cfPakar({this.id, this.nama, this.cf});
+  CfPakar({this.id, this.nama, this.cf});
 
-  static List<cfPakar> fetchAll() {
+  static List<CfPakar> fetchAll() {
     return [
-      cfPakar(id: 'K001', nama: 'Katarak', cf: {
+      CfPakar(id: 'K001', nama: 'Katarak', cf: {
         'G001': -0.6,
         'G002': 0.6,
         'G003': 0.8,
@@ -14,7 +14,7 @@ class cfPakar {
         'G005': -0.8,
         'G006': 0.4
       }),
-      cfPakar(id: 'K002', nama: 'Katarak Traumatik', cf: {
+      CfPakar(id: 'K002', nama: 'Katarak Traumatik', cf: {
         'G002': 0.95,
         'G003': -0.1,
         'G007': 1.0,
@@ -22,7 +22,7 @@ class cfPakar {
         'G009': 0.8,
         'G011': 1.0
       }),
-      cfPakar(id: 'K003', nama: 'Katarak Subkapsularis Posterior', cf: {
+      CfPakar(id: 'K003', nama: 'Katarak Subkapsularis Posterior', cf: {
         'G002': 0.95,
         'G003': 0.8,
         'G008': 1.0,
@@ -33,14 +33,14 @@ class cfPakar {
         'G015': 0.95,
         'G016': 0.3,
       }),
-      cfPakar(id: 'K004', nama: 'Katarak Senilis', cf: {
+      CfPakar(id: 'K004', nama: 'Katarak Senilis', cf: {
         'G004': 0.4,
         'G007': 1.0,
         'G008': 0.9,
         'G010': 0.7,
         'G017': 0.8,
       }),
-      cfPakar(id: 'K005', nama: 'Katarak Juvenile', cf: {
+      CfPakar(id: 'K005', nama: 'Katarak Juvenile', cf: {
         'G004': 0.7,
         'G007': 1.0,
         'G008': 0.9,
