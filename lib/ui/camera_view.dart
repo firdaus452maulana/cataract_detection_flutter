@@ -145,29 +145,37 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
       // pass results to HomeView
       widget.resultsCallback(inferenceResults["recognitions"]);
       // List<Recognition> results = inferenceResults["recognitions"];
+      // Size screenSize = MediaQuery.of(context).size;
+      // double left,top,width,height;
       // log("Masuk Scan");
       // results.map((e){
-      //   double left,top,width,height;
-      //   imglib.Image convertedImage = ImageUtils.convertCameraImage(cameraImage);
+      //   // imglib.Image convertedImage = ImageUtils.convertCameraImage(cameraImage);
       //   left = e.renderLocation.left;
       //   top = e.renderLocation.top;
       //   width = e.renderLocation.width;
       //   height = e.renderLocation.height;
       //
-      //   if ((width >= 80) &&
-      //       (width <= 170) &&
-      //       (left >= 20) &&
-      //       (left <= 130) &&
-      //       (top >= 60) &&
-      //       (top <= 180)) {
-      //     String pathFull = MyApp.imgDir;
-      //     String namafileFull = 'fullCapt.jpg';
-      //     pathFull = pathFull + "/" + namafileFull;
-      //     var jpgFullFile = imglib.encodeJpg(convertedImage);
-      //     new File(pathFull).writeAsBytesSync(jpgFullFile);
-      //     Navigator.push(context, MaterialPageRoute(builder: (context) => testImageConvert(iris: pathFull,)));
-      //   }
-      // });
+      //   imglib.Image convertedImage = ImageUtils.convertCameraImage(cameraImage);
+      //   imglib.Image resizedImage = imglib.copyResize(convertedImage,width: (screenSize.width * 0.75).round());
+      //   imglib.Image rotatedImage = imglib.copyRotate(resizedImage, 90);
+      //
+      //   ///crop convertedImage
+      //   imglib.Image croppedImage = imglib.copyCrop(rotatedImage, (left/1.75).round(),
+      //       (top/1.75).round(), (width/1.75).round(), (height/1.75).round());
+      //
+      //   String pathFull = MyApp.imgDir;
+      //   log(pathFull);
+      //   String namafileFull = 'fullCapt.jpg';
+      //   pathFull = pathFull + "/" + namafileFull;
+      //   var jpgFullFile = imglib.encodeJpg(croppedImage);
+      //   new File(pathFull).writeAsBytesSync(jpgFullFile);
+      //   Navigator.pushReplacement(
+      //       context,
+      //       MaterialPageRoute(
+      //           builder: (context) => testImageConvert(
+      //             iris: pathFull,
+      //           )));
+      // }).toList();
 
       // pass stats to HomeView
       widget.statsCallback((inferenceResults["stats"] as Stats)

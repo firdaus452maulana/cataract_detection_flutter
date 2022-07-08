@@ -37,89 +37,104 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: Colors.black,
-      body: Stack(
-        children: <Widget>[
-          // Camera View
-          CameraView(resultsCallback, statsCallback, cameraImageCallback),
+        key: scaffoldKey,
+        backgroundColor: Colors.black,
+        body: Stack(
+          children: <Widget>[
+            // Camera View
+            CameraView(resultsCallback, statsCallback, cameraImageCallback),
 
-          // Bounding boxes
-          boundingBoxes(results),
+            // Bounding boxes
+            boundingBoxes(results),
 
-          // // Heading
-          // Align(
-          //   alignment: Alignment.topLeft,
-          //   child: Container(
-          //     padding: EdgeInsets.only(top: 20),
-          //     child: Text(
-          //       'Object Detection Flutter',
-          //       textAlign: TextAlign.left,
-          //       style: TextStyle(
-          //         fontSize: 28,
-          //         fontWeight: FontWeight.bold,
-          //         color: Colors.deepOrangeAccent.withOpacity(0.6),
-          //       ),
-          //     ),
-          //   ),
-          // ),
+            // // Heading
+            // Align(
+            //   alignment: Alignment.topLeft,
+            //   child: Container(
+            //     padding: EdgeInsets.only(top: 20),
+            //     child: Text(
+            //       'Object Detection Flutter',
+            //       textAlign: TextAlign.left,
+            //       style: TextStyle(
+            //         fontSize: 28,
+            //         fontWeight: FontWeight.bold,
+            //         color: Colors.deepOrangeAccent.withOpacity(0.6),
+            //       ),
+            //     ),
+            //   ),
+            // ),
 
-          // Bottom Sheet
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: DraggableScrollableSheet(
-              initialChildSize: 0.4,
-              minChildSize: 0.1,
-              maxChildSize: 0.5,
-              builder: (_, ScrollController scrollController) => Container(
-                width: double.maxFinite,
-                decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
-                    borderRadius: BORDER_RADIUS_BOTTOM_SHEET),
-                child: SingleChildScrollView(
-                  controller: scrollController,
-                  child: Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.keyboard_arrow_up,
-                            size: 48, color: Color(0xFF00D092)),
-                        (stats != null)
-                            ? Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    StatsRow('Inference time:',
-                                        '${stats.inferenceTime} ms'),
-                                    StatsRow('Total prediction time:',
-                                        '${stats.totalElapsedTime} ms'),
-                                    StatsRow('Pre-processing time:',
-                                        '${stats.preProcessingTime} ms'),
-                                    StatsRow('Frame',
-                                        '${CameraViewSingleton.inputImageSize?.width} X ${CameraViewSingleton.inputImageSize?.height}'),
-                                  ],
-                                ),
-                              )
-                            : Container()
-                      ],
+            // Bottom Sheet
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: DraggableScrollableSheet(
+                initialChildSize: 0.4,
+                minChildSize: 0.1,
+                maxChildSize: 0.5,
+                builder: (_, ScrollController scrollController) => Container(
+                  width: double.maxFinite,
+                  decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.9),
+                      borderRadius: BORDER_RADIUS_BOTTOM_SHEET),
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.keyboard_arrow_up,
+                              size: 48, color: Color(0xFF00D092)),
+                          (stats != null)
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: [
+                                      StatsRow('Inference time:',
+                                          '${stats.inferenceTime} ms'),
+                                      StatsRow('Total prediction time:',
+                                          '${stats.totalElapsedTime} ms'),
+                                      StatsRow('Pre-processing time:',
+                                          '${stats.preProcessingTime} ms'),
+                                      StatsRow('Frame',
+                                          '${CameraViewSingleton.inputImageSize?.width} X ${CameraViewSingleton.inputImageSize?.height}'),
+                                    ],
+                                  ),
+                                )
+                              : Container()
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          )
-        ],
-      ),
-      floatingActionButton: new Visibility(
-          visible: results != null ? true : false,
-          child: FloatingActionButton(
-            backgroundColor: Color(0xFF00D092),
-            child: Icon(Icons.add_circle_outline, size: 36,),
-            onPressed: () {
-              _captureAndClassify(results, cameraImage);
-            },
-          )),
-    );
+            )
+          ],
+        ),
+        floatingActionButton: new Visibility(
+            visible: results != null ? true : false,
+            child: Container(
+              height: MediaQuery.of(context).size.width * 0.2,
+              child: FloatingActionButton.extended(
+                backgroundColor: Color(0xFF00D092),
+                icon: Icon(
+                  Icons.add_circle_outline,
+                  size: 36,
+                  color: Colors.white,
+                ),
+                label: Text(
+                  "AMBIL GAMBAR",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 16.0
+                  ),
+                ),
+                onPressed: () {
+                  _captureAndClassify(results, cameraImage);
+                },
+              ),
+            )),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
   }
 
   /// Returns Stack of bounding boxes
@@ -140,14 +155,14 @@ class _HomeViewState extends State<HomeView> {
     double left, top, width, height;
     Size screenSize = MediaQuery.of(context).size;
     results.map((e) {
-
       left = e.renderLocation.left;
       top = e.renderLocation.top;
       width = e.renderLocation.width;
       height = e.renderLocation.height;
 
       imglib.Image convertedImage = ImageUtils.convertCameraImage(cameraImage);
-      imglib.Image resizedImage = imglib.copyResize(convertedImage,width: (screenSize.width * 0.75).round());
+      imglib.Image resizedImage = imglib.copyResize(convertedImage,
+          width: (screenSize.width * 0.75).round());
       imglib.Image rotatedImage = imglib.copyRotate(resizedImage, 90);
       log("$left");
       log("$top");
@@ -155,8 +170,12 @@ class _HomeViewState extends State<HomeView> {
       log("$height");
 
       ///crop convertedImage
-      imglib.Image croppedImage = imglib.copyCrop(rotatedImage, (left/1.75).round(),
-          (top/1.75).round(), (width/1.75).round(), (height/1.75).round());
+      imglib.Image croppedImage = imglib.copyCrop(
+          rotatedImage,
+          (left / 1.75).round(),
+          (top / 1.75).round(),
+          (width / 1.75).round(),
+          (height / 1.75).round());
 
       log("${left.round()}");
       log("${top.round()}");

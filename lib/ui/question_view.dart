@@ -4,10 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:object_detection/ui/question_view_extend.dart';
+import 'package:object_detection/ui/result_view.dart';
 
 class QuestionView extends StatefulWidget {
   final String resultClassification;
-  const QuestionView({Key key, this.resultClassification}) : super(key: key);
+  final String imagePath;
+
+  const QuestionView({Key key, this.resultClassification, this.imagePath})
+      : super(key: key);
 
   @override
   _QuestionViewState createState() => _QuestionViewState();
@@ -33,13 +37,6 @@ class _QuestionViewState extends State<QuestionView> {
     '0',
     '0',
     '0',
-    '0',
-    '0',
-    '0',
-    '0',
-    '0',
-    '0',
-    '0',
     '0'
   ];
   List<double> cfUser = [
@@ -54,26 +51,22 @@ class _QuestionViewState extends State<QuestionView> {
     2.0,
     2.0,
     2.0,
-    2.0,
-    2.0,
-    2.0,
-    2.0,
-    2.0,
-    2.0,
-    2.0,
     2.0
   ];
+  String imagePath;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     String eyeOpacity = widget.resultClassification;
-    if(eyeOpacity == "Normal")
-      cfUser[6] = 0.0;
+    imagePath = widget.imagePath;
+    log("imagePath");
+    log(imagePath);
+    if (eyeOpacity == "Normal")
+      cfUser[4] = 0.0;
     else
-      cfUser[6] = 1.0;
-
+      cfUser[4] = 1.0;
   }
 
   @override
@@ -86,7 +79,7 @@ class _QuestionViewState extends State<QuestionView> {
               gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: <Color>[Colors.blue, Colors.lightGreen])),
+                  colors: <Color>[Color(0xFF00D092), Color(0xFF40DAAC)])),
         ),
       ),
       body: SingleChildScrollView(
@@ -97,7 +90,7 @@ class _QuestionViewState extends State<QuestionView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: Text(
-                  "Apakah anda kesulitan melihat saat Malam hari?",
+                  "Apakah anda mengalami penurunan penglihatan terutama di siang hari?",
                   style: GoogleFonts.openSans(
                     fontStyle: FontStyle.normal,
                     fontWeight: FontWeight.bold,
@@ -112,7 +105,7 @@ class _QuestionViewState extends State<QuestionView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: Text(
-                  "Apakah anda mengalami penurunan penglihatan terutama di siang hari?",
+                  "Apakah anda merasa silau ketika mata anda terkena cahaya?",
                   style: GoogleFonts.openSans(
                     fontStyle: FontStyle.normal,
                     fontWeight: FontWeight.bold,
@@ -127,7 +120,7 @@ class _QuestionViewState extends State<QuestionView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: Text(
-                  "Apakah anda merasa silau ketika mata anda terkena cahaya?",
+                  "Apakah anda sering mengganti kacamata yang anda pakai (peningkatan rabun jauh)?",
                   style: GoogleFonts.openSans(
                     fontStyle: FontStyle.normal,
                     fontWeight: FontWeight.bold,
@@ -142,7 +135,7 @@ class _QuestionViewState extends State<QuestionView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: Text(
-                  "Apakah anda sering mengganti kacamata yang anda pakai?",
+                  "Apakah penglihatan anda berkabut?",
                   style: GoogleFonts.openSans(
                     fontStyle: FontStyle.normal,
                     fontWeight: FontWeight.bold,
@@ -157,22 +150,7 @@ class _QuestionViewState extends State<QuestionView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: Text(
-                  "Apakah anda merasakan nyeri mata?",
-                  style: GoogleFonts.openSans(
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-              buildQuestion(4),
-              Divider(
-                color: Colors.black,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: Text(
-                  "Apakah Lensa Mata anda membengkak?",
+                  "Apakah ketika sore penglihatan anda lebih nyaman",
                   style: GoogleFonts.openSans(
                     fontStyle: FontStyle.normal,
                     fontWeight: FontWeight.bold,
@@ -185,9 +163,100 @@ class _QuestionViewState extends State<QuestionView> {
                 color: Colors.black,
               ),
               Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Text(
+                  "Apakah anda pernah mengalami cidera pada bola mata?",
+                  style: GoogleFonts.openSans(
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+              buildQuestion(6),
+              Divider(
+                color: Colors.black,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Text(
+                  "Apakah anda memiliki riwayat penyakit Diabetes?",
+                  style: GoogleFonts.openSans(
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+              buildQuestion(7),
+              Divider(
+                color: Colors.black,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Text(
+                  "Apakah anda menggunakan steroid atau mengonsumsi minuman tak terdaftar dalam jangka panjang?",
+                  style: GoogleFonts.openSans(
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+              buildQuestion(8),
+              Divider(
+                color: Colors.black,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Text(
+                  "Apakah anda Berusia lebih dari 50 tahun?",
+                  style: GoogleFonts.openSans(
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+              buildQuestion(9),
+              Divider(
+                color: Colors.black,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Text(
+                  "Apakah anda mengalami gangguan penglihatan antara satu sampai 10 tahun?",
+                  style: GoogleFonts.openSans(
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+              buildQuestion(10),
+              Divider(
+                color: Colors.black,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Text(
+                  "Apakah anda Berusia kurang dari 50 tahun?",
+                  style: GoogleFonts.openSans(
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+              buildQuestion(11),
+              Divider(
+                color: Colors.black,
+              ),
+              Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
+                      primary: Color(0xFF00D092),
                       padding: EdgeInsets.all(8.0),
                       minimumSize: Size(double.infinity, 24.0)),
                   child: Text(
@@ -196,12 +265,29 @@ class _QuestionViewState extends State<QuestionView> {
                   ),
                   onPressed: () {
                     setState(() {
+                      bool next = true;
+                      log(imagePath);
                       log(cfUser.toString());
                       log(selectedAnswer.toString());
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => QuestionViewExtend(cfUser: cfUser,)));
+                      for (int i = 0; i < 12; i++) {
+                        if (cfUser[i] > 1.0) {
+                          next = false;
+                          break;
+                        }
+                      }
+                      if (next)
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ResultView(
+                                    cfUser: cfUser, imagePath: imagePath)));
+                      else
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content:
+                                const Text('Mohon Jawab Seluruh Pertanyaan'),
+                          ),
+                        );
                     });
                   },
                 ),
@@ -218,6 +304,7 @@ class _QuestionViewState extends State<QuestionView> {
       children: answer.map(
         (value) {
           return RadioListTile(
+              activeColor: Color(0xFF00D092),
               value: value,
               groupValue: selectedAnswer[index],
               title: Text(value),

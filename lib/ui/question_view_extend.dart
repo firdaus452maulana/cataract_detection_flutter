@@ -7,14 +7,16 @@ import 'package:object_detection/ui/result_view.dart';
 
 class QuestionViewExtend extends StatefulWidget {
   final List<double> cfUser;
+  final String imagePath;
 
-  const QuestionViewExtend({Key key, this.cfUser}) : super(key: key);
+  const QuestionViewExtend({Key key, this.cfUser, this.imagePath}) : super(key: key);
 
   @override
   _QuestionViewExtendState createState() => _QuestionViewExtendState();
 }
 
 class _QuestionViewExtendState extends State<QuestionViewExtend> {
+  String imagePath;
   static const answer = <String>[
     'Tidak',
     'Mungkin',
@@ -49,6 +51,8 @@ class _QuestionViewExtendState extends State<QuestionViewExtend> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    imagePath = widget.imagePath;
+    log(imagePath);
     cfUser = widget.cfUser;
   }
 
@@ -62,7 +66,7 @@ class _QuestionViewExtendState extends State<QuestionViewExtend> {
               gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: <Color>[Colors.blue, Colors.lightGreen])),
+                  colors: <Color>[Color(0xFF00D092), Color(0xFF40DAAC)])),
         ),
       ),
       body: SingleChildScrollView(
@@ -254,6 +258,7 @@ class _QuestionViewExtendState extends State<QuestionViewExtend> {
                 padding: const EdgeInsets.all(16.0),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
+                      primary: Color(0xFF00D092),
                       padding: EdgeInsets.all(8.0),
                       minimumSize: Size(double.infinity, 24.0)),
                   child: Text(
@@ -262,12 +267,26 @@ class _QuestionViewExtendState extends State<QuestionViewExtend> {
                   ),
                   onPressed: () {
                     setState(() {
+                      bool next = true;
                       log(cfUser.toString());
-                      Navigator.pop(context);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ResultView(cfUser: cfUser,)));
+                      for (int i=7; i<19; i++){
+                        if (cfUser[i] > 1.0){
+                          next = false;
+                          break;
+                        }
+                      }
+                      if (next) {
+                        Navigator.pop(context);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ResultView(cfUser: cfUser,imagePath: imagePath)));
+                      } else
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: const Text('Mohon Jawab Seluruh Pertanyaan'),
+                          ),
+                        );
                     });
                   },
                 ),
@@ -284,6 +303,7 @@ class _QuestionViewExtendState extends State<QuestionViewExtend> {
       children: answer.map(
             (value) {
           return RadioListTile(
+              activeColor: Color(0xFF00D092),
               value: value,
               groupValue: selectedAnswer[index],
               title: Text(value),

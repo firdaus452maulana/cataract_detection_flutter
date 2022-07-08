@@ -3,11 +3,9 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:object_detection/ui/question_view.dart';
 import 'package:tflite/tflite.dart';
 
-import 'form_identification_view.dart';
 
 class testImageConvert extends StatefulWidget {
   final String iris;
@@ -60,6 +58,7 @@ class _testImageConvertState extends State<testImageConvert> {
       //Declare List _outputs in the class which will be used to show the classified classs name and confidence
       _outputs = output;
       log(_outputs[0]["label"]);
+      log(_outputs.toString());
     });
   }
 
@@ -72,42 +71,105 @@ class _testImageConvertState extends State<testImageConvert> {
               child: CircularProgressIndicator(),
             )
           : Container(
+              color: Color(0xFF00D092),
+              alignment: Alignment.center,
               width: MediaQuery.of(context).size.width,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  imagePath == null ? Container() : Image.file(File(imagePath)),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  _outputs != null
-                      ? Text(
-                          '${_outputs[0]["label"]}',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20.0,
-                            background: Paint()..color = Colors.white,
+              child: Card(
+                clipBehavior: Clip.antiAlias,
+                color: Color(0xFFEFF5F3),
+                margin: EdgeInsets.all(20),
+                elevation: 8,
+                shape: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: Colors.white)),
+                child: Container(
+                  height: 100,
+                  color: Colors.white,
+                  child: Row(
+                    children: [
+                      Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Expanded(
+                            child: imagePath == null
+                                ? Container()
+                                : Image.file(File(imagePath)),
+                            flex: 2,
                           ),
-                        )
-                      : Container(),
-                  RaisedButton(
-                    child: Text(
-                      'Lanjut',
-                      style: GoogleFonts.openSans(),
-                    ),
-                    onPressed: (){
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => QuestionView(resultClassification: _outputs[0]["label"],)));
-                    },
-                    color: Colors.lightGreen,
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(8.0),
-                    splashColor: Colors.grey,
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.topLeft,
+                          child: Column(
+                            children: [
+                              Expanded(
+                                flex: 5,
+                                child: ListTile(
+                                  title: Text(
+                                      "${_outputs[0]["label"]}",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24,
+                                      color: _outputs[0]["label"] == "Keruh" ? Colors.red : Colors.lightGreen
+                                    ),
+                                  ),
+                                  subtitle:
+                                      Text(
+                                          "${_outputs[0]["confidence"] * 100}%",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18
+                                        ),
+                                      ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 5,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    FlatButton(
+                                      onPressed: () {
+                                        // Perform some action
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    QuestionView(
+                                                      resultClassification:
+                                                          _outputs[0]["label"], imagePath: imagePath,
+                                                    )));
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(12.0),
+                                        child: const Text(
+                                          "Lanjut",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w900,
+                                              color: Colors.white),
+                                        ),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(8),
+                                          color: Color(0xFF00D092),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 8,
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        flex: 8,
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
     );

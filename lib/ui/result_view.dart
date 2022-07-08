@@ -2,19 +2,22 @@ import 'dart:developer';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:object_detection/model/cf_pakar.dart';
 import 'package:object_detection/model/daftar_gejala.dart';
 
 class ResultView extends StatefulWidget {
   final List<double> cfUser;
+  final String imagePath;
 
-  const ResultView({Key key, this.cfUser}) : super(key: key);
+  const ResultView({Key key, this.cfUser, this.imagePath}) : super(key: key);
 
   @override
   _ResultViewState createState() => _ResultViewState();
 }
 
 class _ResultViewState extends State<ResultView> {
+  String imagePath;
   List<String> idGejala = [
     'G001',
     'G002',
@@ -27,14 +30,7 @@ class _ResultViewState extends State<ResultView> {
     'G009',
     'G010',
     'G011',
-    'G012',
-    'G013',
-    'G014',
-    'G015',
-    'G016',
-    'G017',
-    'G018',
-    'G019'
+    'G012'
   ];
   List<double> cfUser = [];
   List<String> gejalaUser = [];
@@ -50,6 +46,8 @@ class _ResultViewState extends State<ResultView> {
     cfValueUser = Map.fromIterables(idGejala, widget.cfUser);
     cfValuePakar = CfPakar.fetchAll();
     gejalaUser = getGejala();
+    imagePath = widget.imagePath;
+    log(imagePath);
     log(gejalaUser.toString());
     calculateKatarak();
     calculateKatarakTraumatik();
@@ -62,21 +60,246 @@ class _ResultViewState extends State<ResultView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Hasil Perhitungan'),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: <Color>[Colors.blue, Colors.lightGreen])),
+        appBar: AppBar(
+          title: Text('Hasil Perhitungan'),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: <Color>[Color(0xFF00D092), Color(0xFF40DAAC)])),
+          ),
         ),
-      ),
-      body: Center(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[]),
-      ),
-    );
+        body: Center(
+          child: Container(
+              child: Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: Column(
+              children: <Widget>[
+                Flexible(
+                  flex: 1,
+                  fit: FlexFit.tight,
+                  child: Row(
+                    children: <Widget>[
+                      Flexible(
+                        flex: 1,
+                        fit: FlexFit.tight,
+                        child: Container(
+                          padding: EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              Text(
+                                cfValuePakar[0].nama,
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold
+                                ),
+                              ),
+                              Text(
+                                "${cfValueResult[cfValuePakar[0].nama].toStringAsFixed(2)}%",
+                                style: TextStyle(
+                                    fontSize: 28.0,
+                                    fontWeight: FontWeight.bold
+                                ),
+                              )
+                            ],
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Flexible(
+                        flex: 1,
+                        fit: FlexFit.tight,
+                        child: Container(
+                          padding: EdgeInsets.all(8.0),
+                          child: Image.file(File(imagePath)),
+                            decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.red,
+                        )),
+                      )
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.center,
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Flexible(
+                  flex: 4,
+                  fit: FlexFit.tight,
+                  child: Container(
+                    width: 380,
+                    height: 200,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.blue), //BoxDecoration
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Flexible(
+                  flex: 1,
+                  fit: FlexFit.tight,
+                  child: Row(
+                    children: <Widget>[
+                      Flexible(
+                        flex: 5,
+                        fit: FlexFit.tight,
+                        child: Container(
+                          width: 180,
+                          height: 300,
+                          padding: EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              Text(
+                                cfValuePakar[1].nama,
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold
+                                ),
+                              ),
+                              Text(
+                                "${cfValueResult[cfValuePakar[1].nama].toStringAsFixed(2)}%",
+                                style: TextStyle(
+                                    fontSize: 28.0,
+                                    fontWeight: FontWeight.bold
+                                ),
+                              )
+                            ],
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.cyan,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Flexible(
+                        flex: 5,
+                        fit: FlexFit.tight,
+                        child: Container(
+                            width: 180,
+                            height: 300,
+                            padding: EdgeInsets.all(16.0),
+                            child: Column(
+                              children: [
+                                Text(
+                                  cfValuePakar[2].nama,
+                                  style: TextStyle(
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                                Text(
+                                  "${cfValueResult[cfValuePakar[2].nama].toStringAsFixed(2)}%",
+                                  style: TextStyle(
+                                      fontSize: 24.0,
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                )
+                              ],
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.cyan,
+                            )),
+                      ),
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.center,
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Flexible(
+                  flex: 1,
+                  fit: FlexFit.tight,
+                  child: Row(
+                    children: <Widget>[
+                      Flexible(
+                        flex: 5,
+                        fit: FlexFit.tight,
+                        child: Container(
+                          width: 180,
+                          height: 300,
+                          padding: EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              Text(
+                                cfValuePakar[3].nama,
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold
+                                ),
+                              ),
+                              Text(
+                                "${cfValueResult[cfValuePakar[3].nama].toStringAsFixed(2)}%",
+                                style: TextStyle(
+                                    fontSize: 28.0,
+                                    fontWeight: FontWeight.bold
+                                ),
+                              )
+                            ],
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.cyan,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Flexible(
+                        flex: 5,
+                        fit: FlexFit.tight,
+                        child: Container(
+                            width: 180,
+                            height: 300,
+                            padding: EdgeInsets.all(16.0),
+                            child: Column(
+                              children: [
+                                Text(
+                                  cfValuePakar[4].nama,
+                                  style: TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                                Text(
+                                  "${cfValueResult[cfValuePakar[4].nama].toStringAsFixed(2)}%",
+                                  style: TextStyle(
+                                      fontSize: 28.0,
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                )
+                              ],
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.cyan,
+                            )),
+                      ),
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.center,
+                  ),
+                ),
+              ],
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+            ),
+          )),
+        ));
   }
 
   List<String> getGejala() {
